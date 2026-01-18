@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: fj-middleend-api
+  serde:
+    property-naming-strategy: SNAKE_CASE
+    serialization:
+      indent-output: true
+
+jackson:
+  property-naming-strategy: SNAKE_CASE
+  serialization:
+    indentation: true
