@@ -1,4 +1,4 @@
-package com.acacia.app.domain.entity.game.output;
+package com.acacia.app.domain.entity.game.decision;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.Map;
 @Builder
 @Getter
 @Setter
-public class DecisionOutput {
+public class Decision {
     private String type;
     private Map<String, Object> actions;
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class CreateInput {
+public class GameIntention {
     String gameId;
 }

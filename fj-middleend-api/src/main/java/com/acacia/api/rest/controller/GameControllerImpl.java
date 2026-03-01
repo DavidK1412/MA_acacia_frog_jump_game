@@ -7,8 +7,8 @@ import com.acacia.api.rest.dto.MovementRequest;
 import com.acacia.api.rest.dto.MovementResponse;
 import com.acacia.api.rest.mappers.GameEntityMapper;
 import com.acacia.api.rest.routes.GameControllerRoutes;
-import com.acacia.app.domain.entity.game.create.CreateInput;
-import com.acacia.app.use_cases.interfaces.CreateGameUseCase;
+import com.acacia.app.domain.entity.game.create.GameIntention;
+import com.acacia.use_cases.interfaces.CreateGameUseCase;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -26,7 +26,7 @@ public class GameControllerImpl implements GameController {
     @Override
     @Post
     public HttpResponse<GameCreateResponse> createGame(@Body GameCreateRequest request) {
-        CreateInput input = GameEntityMapper.INSTANCE.toCreateInput(request);
+        GameIntention input = GameEntityMapper.INSTANCE.toCreateIntention(request);
         GameCreateResponse response = GameEntityMapper.INSTANCE.fromCreateOutput(createGameUseCase.createGame(input));
 
         return HttpResponse.created(response);

@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class MovementInput {
+public class MovementIntention {
     private List<Integer>  movement;
     private String gameId;
 }
