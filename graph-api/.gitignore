@@ -1,0 +1,45 @@
+# Binarios
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+
+# Test binary
+*.test
+
+# Output de coverage
+*.out
+coverage.html
+
+# Go workspace file
+go.work
+
+# Archivos de dependencias
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+tmp/
+temp/
