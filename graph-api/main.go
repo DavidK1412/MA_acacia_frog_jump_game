@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"graph-api/internal/api/handler"
 	"graph-api/internal/api/router"
-	"graph-api/internal/application/health/usecase"
+	gameusecase "graph-api/internal/application/game/usecase"
+	healthusecase "graph-api/internal/application/health/usecase"
+	"graph-api/internal/domain/game/policy"
 	"graph-api/internal/infrastructure/config"
 	"graph-api/internal/infrastructure/repository"
 	"graph-api/pkg/logger"
@@ -32,13 +34,21 @@ func main() {
 		zap.String("port", cfg.Server.Port),
 	)
 
+	policyLoader := policy.NewPolicyLoader(true)
+	log.Info("Policy tables cargadas",
+		zap.String("source", policyLoader.LoadSource()),
+	)
+
 	healthRepo := repository.NewInMemoryHealthRepository()
 
-	pingUseCase := usecase.NewPingUseCase(healthRepo)
+	pingUseCase := healthusecase.NewPingUseCase(healthRepo)
+
+	nextMoveUseCase := gameusecase.NewNextMoveUseCase(policyLoader)
 
 	pingHandler := handler.NewPingHandler(pingUseCase)
+	nextMoveHandler := handler.NewNextMoveHandler(nextMoveUseCase)
 
-	r := router.NewRouter(pingHandler)
+	r := router.NewRouter(pingHandler, nextMoveHandler)
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.Server.Port,

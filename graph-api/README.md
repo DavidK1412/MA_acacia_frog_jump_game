@@ -32,16 +32,23 @@ graph-api/
 │   └── api/                    # Puntos de entrada de la aplicación
 ├── internal/
 │   ├── domain/                 # Capa de Dominio (Entidades, Value Objects, Repositorios)
-│   │   └── health/
+│   │   ├── game/               # Bounded Context: Game (Juego de Ranas)
+│   │   │   ├── entity/
+│   │   │   ├── service/
+│   │   │   └── valueobject/
+│   │   └── health/             # Bounded Context: Health
 │   │       ├── entity/
 │   │       └── repository/
 │   ├── application/            # Capa de Aplicación (Use Cases)
+│   │   ├── game/
+│   │   │   └── usecase/
 │   │   └── health/
 │   │       └── usecase/
 │   ├── api/                    # Capa de API (HTTP Handlers, Routers)
 │   │   ├── handler/
 │   │   └── router/
-│   └── infrastructure/         # Capa de Infraestructura (Config, Repositories)
+│   └── infrastructure/         # Capa de Infraestructura (Config, Repositories, Algorithms)
+│       ├── algorithm/
 │       ├── config/
 │       └── repository/
 └── pkg/                        # Paquetes compartidos
@@ -96,6 +103,51 @@ Respuesta:
   "timestamp": "2026-03-01T17:30:00Z"
 }
 ```
+
+### Next Move - Juego de Ranas
+
+```
+POST /v1/graph/next-move
+```
+
+Encuentra el mejor siguiente movimiento para el juego de las ranas usando BFS.
+
+**Request:**
+```json
+{
+  "state": [1, 2, 3, 0, 4, 5, 6],
+  "options": {
+    "returnNextState": true,
+    "returnMeta": true
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "found": true,
+  "level": 3,
+  "nextMove": {
+    "type": "STEP",
+    "frogId": 4,
+    "fromIndex": 4,
+    "toIndex": 3
+  },
+  "nextState": [1, 2, 3, 4, 0, 5, 6],
+  "meta": {
+    "goalState": [4, 5, 6, 0, 1, 2, 3],
+    "predictedRemainingCost": 14,
+    "legalMovesFromState": 2,
+    "strategy": "POLICY_TABLE",
+    "policyVersion": "level_3_v1",
+    "loadSource": "FILESYSTEM",
+    "timeMs": 0
+  }
+}
+```
+
+Ver [ENDPOINT_NEXT_MOVE.md](ENDPOINT_NEXT_MOVE.md) para más ejemplos y documentación completa.
 
 ## ⚙️ Configuración
 
