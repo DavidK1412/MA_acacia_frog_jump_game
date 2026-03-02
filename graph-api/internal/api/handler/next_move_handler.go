@@ -17,47 +17,47 @@ func NewNextMoveHandler(useCase *usecase.NextMoveUseCase) *NextMoveHandler {
 }
 
 type NextMoveRequestDTO struct {
-	State   []int               `json:"state"`
-	Goal    string              `json:"goal,omitempty"`
-	Limits  *LimitsDTO          `json:"limits,omitempty"`
-	Options *OptionsDTO         `json:"options,omitempty"`
+	State   []int       `json:"state"`
+	Goal    string      `json:"goal,omitempty"`
+	Limits  *LimitsDTO  `json:"limits,omitempty"`
+	Options *OptionsDTO `json:"options,omitempty"`
 }
 
 type LimitsDTO struct {
-	TimeoutMs int `json:"timeoutMs,omitempty"`
-	MaxNodes  int `json:"maxNodes,omitempty"`
-	MaxDepth  int `json:"maxDepth,omitempty"`
+	TimeoutMs int `json:"timeout_ms,omitempty"`
+	MaxNodes  int `json:"max_nodes,omitempty"`
+	MaxDepth  int `json:"max_depth,omitempty"`
 }
 
 type OptionsDTO struct {
-	ReturnNextState bool `json:"returnNextState,omitempty"`
-	ReturnMeta      bool `json:"returnMeta,omitempty"`
+	ReturnNextState bool `json:"return_next_state,omitempty"`
+	ReturnMeta      bool `json:"return_meta,omitempty"`
 }
 
 type NextMoveResponseDTO struct {
-	Found     bool               `json:"found"`
-	Level     int                `json:"level"`
-	NextMove  *MoveResponseDTO   `json:"nextMove,omitempty"`
-	NextState []int              `json:"nextState,omitempty"`
-	Reason    string             `json:"reason,omitempty"`
-	Meta      *MetaResponseDTO   `json:"meta,omitempty"`
+	Found     bool             `json:"found"`
+	Level     int              `json:"level"`
+	NextMove  *MoveResponseDTO `json:"next_move,omitempty"`
+	NextState []int            `json:"next_state,omitempty"`
+	Reason    string           `json:"reason,omitempty"`
+	Meta      *MetaResponseDTO `json:"meta,omitempty"`
 }
 
 type MoveResponseDTO struct {
 	Type      string `json:"type"`
-	FrogId    int    `json:"frogId"`
-	FromIndex int    `json:"fromIndex"`
-	ToIndex   int    `json:"toIndex"`
+	FrogId    int    `json:"frog_id"`
+	FromIndex int    `json:"from_index"`
+	ToIndex   int    `json:"to_index"`
 }
 
 type MetaResponseDTO struct {
-	GoalState              []int  `json:"goalState,omitempty"`
-	PredictedRemainingCost int    `json:"predictedRemainingCost,omitempty"`
-	LegalMovesFromState    int    `json:"legalMovesFromState,omitempty"`
+	GoalState              []int  `json:"goal_state,omitempty"`
+	PredictedRemainingCost int    `json:"predicted_remaining_cost,omitempty"`
+	LegalMovesFromState    int    `json:"legal_moves_from_state,omitempty"`
 	Strategy               string `json:"strategy"`
-	TimeMs                 int64  `json:"timeMs"`
-	PolicyVersion          string `json:"policyVersion,omitempty"`
-	LoadSource             string `json:"loadSource,omitempty"`
+	TimeMs                 int64  `json:"time_ms"`
+	PolicyVersion          string `json:"policy_version,omitempty"`
+	LoadSource             string `json:"load_source,omitempty"`
 }
 
 type ErrorResponseDTO struct {
