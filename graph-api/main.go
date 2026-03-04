@@ -8,6 +8,7 @@ import (
 	gameusecase "graph-api/internal/application/game/usecase"
 	healthusecase "graph-api/internal/application/health/usecase"
 	"graph-api/internal/domain/game/policy"
+	"graph-api/internal/domain/game/service"
 	"graph-api/internal/infrastructure/config"
 	"graph-api/internal/infrastructure/repository"
 	"graph-api/pkg/logger"
@@ -17,6 +18,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 )
 
@@ -34,6 +36,25 @@ func main() {
 		zap.String("port", cfg.Server.Port),
 	)
 
+	var dbPool *pgxpool.Pool
+
+	if cfg.Database.URL != "" {
+		var err error
+		dbPool, err = pgxpool.New(context.Background(), cfg.Database.URL)
+		if err != nil {
+			log.Fatal("Error conectando a PostgreSQL", zap.Error(err))
+		}
+		defer dbPool.Close()
+
+		if err := dbPool.Ping(context.Background()); err != nil {
+			log.Fatal("Error verificando conexión a PostgreSQL", zap.Error(err))
+		}
+
+		log.Info("Conexión a PostgreSQL establecida")
+	} else {
+		log.Warn("DATABASE_URL no configurado, endpoint /v1/graph/metrics no estará disponible")
+	}
+
 	policyLoader := policy.NewPolicyLoader(true)
 	log.Info("Policy tables cargadas",
 		zap.String("source", policyLoader.LoadSource()),
@@ -45,10 +66,23 @@ func main() {
 
 	nextMoveUseCase := gameusecase.NewNextMoveUseCase(policyLoader)
 
+	legalMovesGenerator := service.NewLegalMovesGenerator()
+
+	var metricsUseCase *gameusecase.MetricsUseCase
+	if dbPool != nil {
+		movementRepo := repository.NewPostgresMovementRepository(dbPool)
+		metricsUseCase = gameusecase.NewMetricsUseCase(movementRepo, legalMovesGenerator)
+	}
+
 	pingHandler := handler.NewPingHandler(pingUseCase)
 	nextMoveHandler := handler.NewNextMoveHandler(nextMoveUseCase)
+	
+	var metricsHandler *handler.MetricsHandler
+	if metricsUseCase != nil {
+		metricsHandler = handler.NewMetricsHandler(metricsUseCase)
+	}
 
-	r := router.NewRouter(pingHandler, nextMoveHandler)
+	r := router.NewRouter(pingHandler, nextMoveHandler, metricsHandler)
 
 	srv := &http.Server{
 		Addr:         ":" + cfg.Server.Port,
