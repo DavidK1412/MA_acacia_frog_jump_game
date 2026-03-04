@@ -1,4 +1,4 @@
-package com.acacia.use_cases;
+package com.acacia.use_cases.game;
 
 import com.acacia.app.domain.entity.Game;
 import com.acacia.app.domain.entity.game.create.GameIntention;
@@ -6,7 +6,7 @@ import com.acacia.app.domain.entity.game.output.GameCreateOutput;
 import com.acacia.app.domain.services.game.OrchestatorService;
 import com.acacia.use_cases.commons.Messages;
 import com.acacia.use_cases.exceptions.gameUseCase.CreateGameException;
-import com.acacia.use_cases.interfaces.CreateGameUseCase;
+import com.acacia.use_cases.game.interfaces.CreateGameUseCase;
 import jakarta.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

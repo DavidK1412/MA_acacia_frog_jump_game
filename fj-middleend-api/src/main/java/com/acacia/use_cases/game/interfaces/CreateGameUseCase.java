@@ -1,4 +1,4 @@
-package com.acacia.use_cases.interfaces;
+package com.acacia.use_cases.game.interfaces;
 
 import com.acacia.app.domain.entity.game.create.GameIntention;
 import com.acacia.app.domain.entity.game.output.GameCreateOutput;

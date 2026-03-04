@@ -5,7 +5,7 @@ import com.acacia.app.domain.entity.game.create.GameIntention;
 import com.acacia.app.domain.entity.game.output.GameCreateOutput;
 import com.acacia.app.domain.services.game.OrchestatorService;
 import com.acacia.use_cases.exceptions.gameUseCase.CreateGameException;
-import com.acacia.use_cases.interfaces.CreateGameUseCase;
+import com.acacia.use_cases.game.interfaces.CreateGameUseCase;
 import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;

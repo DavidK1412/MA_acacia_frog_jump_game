@@ -8,7 +8,7 @@ import com.acacia.api.rest.dto.MovementResponse;
 import com.acacia.api.rest.mappers.GameEntityMapper;
 import com.acacia.api.rest.routes.GameControllerRoutes;
 import com.acacia.app.domain.entity.game.create.GameIntention;
-import com.acacia.use_cases.interfaces.CreateGameUseCase;
+import com.acacia.use_cases.game.interfaces.CreateGameUseCase;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
