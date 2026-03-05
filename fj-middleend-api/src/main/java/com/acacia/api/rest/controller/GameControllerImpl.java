@@ -6,9 +6,11 @@ import com.acacia.api.rest.dto.GameCreateResponse;
 import com.acacia.api.rest.dto.MovementRequest;
 import com.acacia.api.rest.dto.MovementResponse;
 import com.acacia.api.rest.mappers.GameEntityMapper;
+import com.acacia.api.rest.mappers.MovementDecisionEntityMapper;
 import com.acacia.api.rest.routes.GameControllerRoutes;
 import com.acacia.app.domain.entity.game.create.GameIntention;
 import com.acacia.use_cases.game.interfaces.CreateGameUseCase;
+import com.acacia.use_cases.movements.best_next.GetBestNextUseCase;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class GameControllerImpl implements GameController {
 
     private final CreateGameUseCase createGameUseCase;
+    private final GetBestNextUseCase getBestNextUseCase;
 
     @Override
     @Post
@@ -41,7 +44,7 @@ public class GameControllerImpl implements GameController {
     @Override
     @Get(GameControllerRoutes.BEST_NEXT_MOVE)
     public HttpResponse<MovementResponse> getBestNextMove(@PathVariable String gameId) {
-        return null;
+        return HttpResponse.ok(MovementDecisionEntityMapper.INSTANCE.fromDecision(getBestNextUseCase.getBestNext(gameId)));
     }
 
     @Override

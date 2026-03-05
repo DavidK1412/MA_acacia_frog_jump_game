@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @MicronautTest
-@DisplayName("CreateGameUseCase Tests")
+@DisplayName("CreateGameUseCase - Tests Funcionales")
 class CreateGameUseCaseTest {
 
     @Inject
@@ -149,5 +149,72 @@ class CreateGameUseCaseTest {
 
         assertNotNull(exception.getMessage());
         verify(orchestatorService, times(1)).createGame(intention);
+    }
+
+    @Test
+    @DisplayName("Debe propagar el gameId correcto desde la intención al output")
+    void shouldPropagateGameIdFromIntentionToOutput() {
+        String expectedGameId = "specific-game-id-xyz";
+        GameIntention intention = GameIntention.builder()
+                .gameId(expectedGameId)
+                .build();
+
+        Game mockGame = Game.builder()
+                .id(expectedGameId)
+                .isFinished(false)
+                .buclicityAvg(0.0f)
+                .branchFactorAvg(0.0f)
+                .build();
+
+        when(orchestatorService.createGame(any(GameIntention.class)))
+                .thenReturn(mockGame);
+
+        GameCreateOutput result = createGameUseCase.createGame(intention);
+
+        assertEquals(expectedGameId, result.getGameId());
+        verify(orchestatorService, times(1)).createGame(intention);
+    }
+
+    @Test
+    @DisplayName("Debe incluir mensaje de éxito en el output")
+    void shouldIncludeSuccessMessageInOutput() {
+        GameIntention intention = GameIntention.builder()
+                .gameId("test-game")
+                .build();
+
+        Game mockGame = Game.builder()
+                .id("test-game")
+                .isFinished(false)
+                .build();
+
+        when(orchestatorService.createGame(any(GameIntention.class)))
+                .thenReturn(mockGame);
+
+        GameCreateOutput result = createGameUseCase.createGame(intention);
+
+        assertNotNull(result.getMessage());
+        assertFalse(result.getMessage().isEmpty());
+    }
+
+    @Test
+    @DisplayName("Debe verificar que el orchestrator es invocado con los parámetros correctos")
+    void shouldVerifyOrchestratorIsCalledWithCorrectParameters() {
+        GameIntention intention = GameIntention.builder()
+                .gameId("param-test-game")
+                .build();
+
+        Game mockGame = Game.builder()
+                .id("param-test-game")
+                .isFinished(false)
+                .build();
+
+        when(orchestatorService.createGame(any(GameIntention.class)))
+                .thenReturn(mockGame);
+
+        createGameUseCase.createGame(intention);
+
+        verify(orchestatorService).createGame(argThat(arg -> 
+                arg != null && arg.getGameId().equals("param-test-game")
+        ));
     }
 }

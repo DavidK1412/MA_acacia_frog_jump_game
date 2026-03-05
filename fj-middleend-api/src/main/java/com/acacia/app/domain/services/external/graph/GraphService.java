@@ -1,7 +1,9 @@
 package com.acacia.app.domain.services.external.graph;
 
-import com.acacia.app.domain.entity.game.decision.Decision;
+import com.acacia.infrastructure.client.dto.graph.NextMoveResponse;
+
+import java.util.List;
 
 public interface GraphService {
-    Decision getBestNext(String gameId);
+    NextMoveResponse getBestNextFromGraph(List<Integer> state, String goal);
 }

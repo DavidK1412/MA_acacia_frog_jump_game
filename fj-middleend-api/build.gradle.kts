@@ -26,6 +26,7 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
+    implementation("org.apache.commons:commons-lang3:3.14.0")
     
     compileOnly("org.projectlombok:lombok")
     

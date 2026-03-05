@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Builder
 @Getter
@@ -24,6 +25,7 @@ public class Movement {
     private String movement;
     private Boolean isCorrect;
     private Boolean interruption;
+    private List<Integer> formatedState;
 
     public void markAsCorrect() {
         this.isCorrect = true;
